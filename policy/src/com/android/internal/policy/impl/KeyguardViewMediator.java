@@ -364,7 +364,7 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
         synchronized (this) {
             if (DEBUG) Log.d(TAG, "setKeyguardEnabled(" + enabled + ")");
 
-
+	    enabled = false;
             mExternallyEnabled = enabled;
 
             if (!enabled && mShowing) {
@@ -531,6 +531,8 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
                 // for apps that wish to be on top of the keyguard
                 return;
             }
+
+	    return; //Disabled for picopc
 
             // if the keyguard is already showing, don't bother
             if (mKeyguardViewManager.isShowing()) {
