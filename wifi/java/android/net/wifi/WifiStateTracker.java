@@ -119,7 +119,7 @@ public class WifiStateTracker extends NetworkStateTracker {
      * status items that are not sent via asynchronous events.
      * An example is RSSI (signal strength).
      */
-    private static final int POLL_STATUS_INTERVAL_MSECS = 3000;
+    private static final int POLL_STATUS_INTERVAL_MSECS = 6000;
 
     /**
      * The max number of the WPA supplicant loop iterations before we
