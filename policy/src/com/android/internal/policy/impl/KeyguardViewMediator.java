@@ -533,7 +533,7 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
             }
 
 	    return; //Disabled for picopc
-
+	    /*
             // if the keyguard is already showing, don't bother
             if (mKeyguardViewManager.isShowing()) {
                 if (DEBUG) Log.d(TAG, "doKeyguard: not showing because it is already showing");
@@ -556,6 +556,7 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
 
             if (DEBUG) Log.d(TAG, "doKeyguard: showing the lock screen");
             showLocked();
+            */
         }
     }
 
