@@ -1740,7 +1740,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         final boolean canceled = (flags & KeyEvent.FLAG_CANCELED) != 0;
 
         final boolean isInjected = (policyFlags & WindowManagerPolicy.FLAG_INJECTED) != 0;
-
+	final boolean sendToApp = (policyFlags & WindowManagerPolicy.FLAG_WAKE) != 0;
         // If screen is off then we treat the case where the keyguard is open but hidden
         // the same as if it were open and in front.
         // This will prevent any keys other than the power button from waking the screen
@@ -1767,14 +1767,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         //        the device some other way (which is why we have an exemption here for injected
         //        events).
         int result;
-        if (isScreenOn || isInjected) {
+        if (isScreenOn || isInjected || sendToApp) {
             // When the screen is on or if the key is injected pass the key to the application.
             result = ACTION_PASS_TO_USER;
         } else {
             // When the screen is off and the key is not injected, determine whether
             // to wake the device but don't pass the key to the application.
             result = 0;
-
             final boolean isWakeKey = (policyFlags
                     & (WindowManagerPolicy.FLAG_WAKE | WindowManagerPolicy.FLAG_WAKE_DROPPED)) != 0;
             if (down && isWakeKey) {
