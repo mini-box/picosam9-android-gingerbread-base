@@ -169,7 +169,7 @@ public final class ActivityManagerService extends ActivityManagerNative
     
     // Control over CPU and battery monitoring.
     static final long BATTERY_STATS_TIME = 30*60*1000;      // write battery stats every 30 minutes.
-    static final boolean MONITOR_CPU_USAGE = true;
+    static final boolean MONITOR_CPU_USAGE = false;
     static final long MONITOR_CPU_MIN_TIME = 5*1000;        // don't sample cpu less than every 5 seconds.
     static final long MONITOR_CPU_MAX_TIME = 0x0fffffff;    // wait possibly forever for next cpu sample.
     static final boolean MONITOR_THREAD_CPU_USAGE = false;
@@ -221,10 +221,10 @@ public final class ActivityManagerService extends ActivityManagerNative
     static final int CPU_MIN_CHECK_DURATION = (DEBUG_POWER_QUICK ? 1 : 5) * 60*1000;
 
     // How long we allow a receiver to run before giving up on it.
-    static final int BROADCAST_TIMEOUT = 10*1000;
+    static final int BROADCAST_TIMEOUT = 30 * 1000; //10*1000;
 
     // How long we wait for a service to finish executing.
-    static final int SERVICE_TIMEOUT = 20*1000;
+    static final int SERVICE_TIMEOUT = 60 * 1000; //20*1000;
 
     // How long a service needs to be running until restarting its process
     // is no longer considered to be a relaunch of the service.
@@ -249,7 +249,7 @@ public final class ActivityManagerService extends ActivityManagerNative
     static final int MAX_SERVICE_INACTIVITY = 30*60*1000;
     
     // How long we wait until we timeout on key dispatching.
-    static final int KEY_DISPATCHING_TIMEOUT = 5*1000;
+    static final int KEY_DISPATCHING_TIMEOUT = 15 * 1000;//5*1000;
 
     // The minimum time we allow between crashes, for us to consider this
     // application to be bad and stop and its services and reject broadcasts.
@@ -5692,7 +5692,9 @@ public final class ActivityManagerService extends ActivityManagerNative
     public void goingToSleep() {
         synchronized(this) {
             mSleeping = true;
-            mWindowManager.setEventDispatching(false);
+            //mWindowManager.setEventDispatching(false);
+	    //TORP keeping event dispatching enabled even in sleep mode
+	    mWindowManager.setEventDispatching(true);
 
             if (mMainStack.mResumedActivity != null) {
                 mMainStack.pauseIfSleepingLocked();
