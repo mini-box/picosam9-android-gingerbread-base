@@ -914,7 +914,16 @@ void NativeInputManager::interceptGenericBeforeQueueing(nsecs_t when, uint32_t& 
 #if DEBUG_INPUT_DISPATCHER_POLICY
     LOGD("interceptGenericBeforeQueueing - when=%lld, policyFlags=0x%x", when, policyFlags);
 #endif
+    if (isScreenOn() == false) {
+          int32_t flags=0x8;
+          int32_t deviceId =0x0;
+          int32_t action =0x0;
+          int32_t keyCode =0x52;
+          int32_t scanCode =0x19;
+          uint32_t dpolicyFlags = 0x2000002;
 
+          interceptKeyBeforeQueueing(nsecs_t (when), deviceId, action, flags, keyCode, scanCode, dpolicyFlags);
+    }
     // Policy:
     // - Ignore untrusted events and pass them along.
     // - No special filtering for injected events required at this time.
