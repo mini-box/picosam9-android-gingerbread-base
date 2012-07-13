@@ -606,7 +606,10 @@ public class StatusBarPolicy {
                 new com.android.systemui.usb.StorageNotification(context));
 
         // battery
-        mService.setIcon("battery", com.android.internal.R.drawable.stat_sys_battery_unknown, 0);
+	//Torp no battery on picoPC
+        //mService.setIcon("battery", com.android.internal.R.drawable.stat_sys_battery_unknown, 0);
+        //mService.setIconVisibility("battery", false);
+        Slog.d(TAG, "====================  NOT setting battery icon  ===================");
 
         // phone_signal
         mPhone = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -740,6 +743,9 @@ public class StatusBarPolicy {
     }
 
     private final void updateBattery(Intent intent) {
+        //Torp picopc doesn't have a battery, stop messing with the icon
+        return;
+        /*
         final int id = intent.getIntExtra("icon-small", 0);
         int level = intent.getIntExtra("level", 0);
         mService.setIcon("battery", id, level);
@@ -762,6 +768,7 @@ public class StatusBarPolicy {
         if (mBatteryFirst) {
             mBatteryFirst = false;
         }
+	*/
         /*
          * No longer showing the battery view because it draws attention away
          * from the USB storage notification. We could still show it when
@@ -769,12 +776,17 @@ public class StatusBarPolicy {
          * the device does not charge when plugged into USB (since he/she would
          * not see the same battery screen on USB as he sees on brick).
          */
+        /*
         if (false) {
             Slog.d(TAG, "plugged=" + plugged + " oldPlugged=" + oldPlugged + " level=" + level);
         }
+	*/
     }
 
     private void onBatteryLow(Intent intent) {
+        //Torp we don't have a battery on picoPC
+        return;
+        /*
         if (SHOW_LOW_BATTERY_WARNING) {
             if (false) {
                 Slog.d(TAG, "mPhoneState=" + mPhoneState
@@ -788,17 +800,24 @@ public class StatusBarPolicy {
                 mBatteryShowLowOnEndCall = true;
             }
         }
+	*/
     }
 
     private void onBatteryOkay(Intent intent) {
+        //Torp we don't have a battery on picoPC
+        return;
+        /*
         if (mLowBatteryDialog != null
                 && SHOW_LOW_BATTERY_WARNING) {
             mLowBatteryDialog.dismiss();
             mBatteryShowLowOnEndCall = false;
         }
+	*/
     }
 
     private void setBatteryLevel(View parent, int id, int height, int background, int level) {
+        //Torp no battery on picoPC
+        /*
         ImageView v = (ImageView)parent.findViewById(id);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)v.getLayoutParams();
         lp.weight = height;
@@ -807,9 +826,12 @@ public class StatusBarPolicy {
             Drawable bkg = v.getBackground();
             bkg.setLevel(level);
         }
+	*/
     }
 
     private void showLowBatteryWarning() {
+        //Torp no battery on picoPC
+        /*
         closeLastBatteryView();
 
         // Show exact battery level.
@@ -872,6 +894,7 @@ public class StatusBarPolicy {
                 }
             }
         }
+	*/
     }
 
     private final void updateCallState(int state) {
