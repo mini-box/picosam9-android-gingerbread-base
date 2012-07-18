@@ -198,6 +198,7 @@ public class WifiStateTracker extends NetworkStateTracker {
     public static final int SUPPL_SCAN_HANDLING_NORMAL = 1;
     public static final int SUPPL_SCAN_HANDLING_LIST_ONLY = 2;
 
+    private Handler mWifiHandler;
     private WifiMonitor mWifiMonitor;
     private WifiInfo mWifiInfo;
     private List<ScanResult> mScanResults;
@@ -389,7 +390,8 @@ public class WifiStateTracker extends NetworkStateTracker {
 
     public WifiStateTracker(Context context, Handler target) {
         super(context, target, ConnectivityManager.TYPE_WIFI, 0, "WIFI", "");
-        
+
+        mWifiHandler = target;
         mWifiInfo = new WifiInfo();
         mWifiMonitor = new WifiMonitor(this);
         mHaveIpAddress = false;
@@ -984,6 +986,15 @@ public class WifiStateTracker extends NetworkStateTracker {
                 mObtainingIpAddress = false;
                 if (died) {
                     mWM.setWifiEnabled(false);
+                    //PANIC Send a delayed message to restart WIFI
+                    mWifiHandler.postDelayed(
+                	new Runnable()
+                	{
+                	    @Override
+                	    public void run() { mWM.setWifiEnabled(true);}
+                	},
+                	2000
+                    );
                 }
                 break;
 
