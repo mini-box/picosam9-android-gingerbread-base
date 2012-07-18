@@ -16,7 +16,7 @@
 
 #define LOG_TAG "InputManager-JNI"
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 0
 
 // Log debug messages about InputReaderPolicy
 #define DEBUG_INPUT_READER_POLICY 0
@@ -915,15 +915,17 @@ void NativeInputManager::interceptGenericBeforeQueueing(nsecs_t when, uint32_t& 
     LOGD("interceptGenericBeforeQueueing - when=%lld, policyFlags=0x%x", when, policyFlags);
 #endif
     if (isScreenOn() == false) {
-          int32_t flags=0x8;
-          int32_t deviceId =0x0;
-          int32_t action =0x0;
-          int32_t keyCode =0x52;
-          int32_t scanCode =0x19;
-          uint32_t dpolicyFlags = 0x2000002;
-
-          interceptKeyBeforeQueueing(nsecs_t (when), deviceId, action, flags, keyCode, scanCode, dpolicyFlags);
+	int32_t flags=0x8;
+	int32_t deviceId =0x0;
+	int32_t action =0x0;
+	int32_t keyCode =0xEF;
+	int32_t scanCode =0x19;
+	uint32_t dpolicyFlags = 0x2000002;
+	interceptKeyBeforeQueueing(nsecs_t (when), deviceId, action, flags, keyCode, scanCode, dpolicyFlags);
+	policyFlags = POLICY_FLAG_WOKE_HERE;
+	return;
     }
+
     // Policy:
     // - Ignore untrusted events and pass them along.
     // - No special filtering for injected events required at this time.
@@ -940,6 +942,8 @@ void NativeInputManager::interceptGenericBeforeQueueing(nsecs_t when, uint32_t& 
     } else {
         policyFlags |= POLICY_FLAG_PASS_TO_USER;
     }
+
+
 }
 
 bool NativeInputManager::interceptKeyBeforeDispatching(const sp<InputChannel>& inputChannel,

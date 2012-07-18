@@ -1766,10 +1766,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         //        because we are presenting media on an auxiliary screen or remotely controlling
         //        the device some other way (which is why we have an exemption here for injected
         //        events).
-        int result;
+        int result = 0;
         if (isScreenOn || isInjected || sendToApp) {
             // When the screen is on or if the key is injected pass the key to the application.
-            result = ACTION_PASS_TO_USER;
+            // keyCode 0xEF has been injected when screen is off from com_android_server_InputManager.cpp
+	    if (keyCode != 0xEF)
+                result = ACTION_PASS_TO_USER;
         } else {
             // When the screen is off and the key is not injected, determine whether
             // to wake the device but don't pass the key to the application.
