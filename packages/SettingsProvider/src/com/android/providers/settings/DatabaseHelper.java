@@ -98,6 +98,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "value TEXT" +
                 ");");
         db.execSQL("CREATE INDEX secureIndex1 ON secure (name);");
+        /* PANIC set device provisioned by default */
+        db.execSQL("INSERT INTO secure (name, value) " + 
+		"VALUES ('device_provisioned', '1');");
     }
 
     @Override
