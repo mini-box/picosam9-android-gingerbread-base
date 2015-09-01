@@ -2517,14 +2517,14 @@ public class WifiStateTracker extends NetworkStateTracker {
                         Log.d(TAG, "DHCP request started");
                         if (NetworkUtils.runDhcp(mInterfaceName, mDhcpInfo)) {
                             event = EVENT_INTERFACE_CONFIGURATION_SUCCEEDED;
-                            Log.d(TAG, "DHCP succeeded with lease: " + mDhcpInfo.leaseDuration);
+			    long wakeup = SystemClock.elapsedRealtime() + mDhcpInfo.leaseDuration * 480;
+                            Log.d(TAG, "DHCP succeeded with lease: " + mDhcpInfo.leaseDuration +  " will wake after " + wakeup);
                             //Do it a bit earlier than half the lease duration time
                             //to beat the native DHCP client and avoid extra packets
                             //48% for one hour lease time = 29 minutes
-                            mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                                    SystemClock.elapsedRealtime() +
-                                    mDhcpInfo.leaseDuration * 480, //in milliseconds
-                                    mDhcpRenewalIntent);
+
+
+                            mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeup, mDhcpRenewalIntent);
                         } else {
                             event = EVENT_INTERFACE_CONFIGURATION_FAILED;
                             Log.e(TAG, "DHCP request failed: " + NetworkUtils.getDhcpError());
